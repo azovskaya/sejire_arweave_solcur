@@ -60,7 +60,10 @@ async function main() {
     assert.equal(result.ok, true, JSON.stringify(result));
     if (result.ok) {
       const status = await ar.transactions.getStatus(result.txId);
-      assert.ok(status.status === 200 || status.status === 202, status.statusText);
+      assert.ok(
+        status.status === 200 || status.status === 202,
+        `unexpected status ${status.status}`
+      );
       console.log("publish.selftest: OK arlocal", { txId: result.txId, address });
     }
   } else if (result.ok) {
