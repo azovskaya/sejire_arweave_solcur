@@ -240,6 +240,9 @@ export type UiMessages = {
     leadDemo: string;
     leadSponsor: string;
     leadTreasury: string;
+    leadArweave: string;
+    sendToArweave: string;
+    publishedTxLink: (txId: string) => string;
     newVersionHint: string;
     prevKept: (id: string) => string;
     oldKept: string;
@@ -638,6 +641,10 @@ const ru: UiMessages = {
       " Сейчас на сайте включён демо-режим: версии хранятся в этом браузере (без оплаты и без Arweave), чтобы проверить сценарий.",
     leadSponsor: " Вечность — через кассир",
     leadTreasury: " Сеть оплачивает казна проекта из кассы. 12 слов только шифруют сейф.",
+    leadArweave:
+      " Отправка — нативная транзакция в Arweave: из 12 слов получается адрес, на него нужен AR (~0.05), затем в сеть уходит только зашифрованный сейф.",
+    sendToArweave: "Отправить в Arweave",
+    publishedTxLink: (txId) => `https://viewblock.io/arweave/tx/${txId}`,
     newVersionHint: "Сохранить текущее древо как новую версию теми же 12 словами",
     prevKept: (id) => ` Предыдущая версия останется (${id}…).`,
     oldKept: " Если сейф уже сохраняли — старые версии останутся.",
@@ -1053,6 +1060,10 @@ const kk: UiMessages = {
       " Қазір сайтта демо-режим: нұсқалар осы браузерде сақталады (төлемсіз, Arweave-сіз) — сценарийді тексеру үшін.",
     leadSponsor: " Мәңгілік — кассир арқылы",
     leadTreasury: " Желіні жоба қазынасы төлейді. 12 сөз тек сейфті шифрлайды.",
+    leadArweave:
+      " Arweave-ке тікелей транзакция: 12 сөзден адрес, AR (~0.05) қажет, желіге тек шифрланған сейф кетеді.",
+    sendToArweave: "Arweave-ке жіберу",
+    publishedTxLink: (txId) => `https://viewblock.io/arweave/tx/${txId}`,
     newVersionHint: "Қазіргі шежірені сол 12 сөзбен жаңа нұсқа ретінде сақтау",
     prevKept: (id) => ` Алдыңғы нұсқа қалады (${id}…).`,
     oldKept: " Егер сейф бұрын сақталса — ескі нұсқалар қалады.",
@@ -1469,6 +1480,10 @@ const en: UiMessages = {
       " Demo mode is on: versions stay in this browser (no payment, no Arweave) so you can try the flow.",
     leadSponsor: " Forever — through the cashier",
     leadTreasury: " The project treasury pays the network. The 12 words only encrypt the vault.",
+    leadArweave:
+      " Publish is a native Arweave transaction: your 12 words derive a wallet address; fund it with AR (~0.05), then only ciphertext goes on-chain.",
+    sendToArweave: "Send to Arweave",
+    publishedTxLink: (txId) => `https://viewblock.io/arweave/tx/${txId}`,
     newVersionHint: "Save the current tree as a new version with the same 12 words",
     prevKept: (id) => ` The previous version will remain (${id}…).`,
     oldKept: " If this vault was saved before, older versions stay.",

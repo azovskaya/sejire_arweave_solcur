@@ -1,8 +1,8 @@
 import {
-  ARWEAVE_HOSTS,
-  DATA_GATEWAYS,
+  listArweaveHosts,
+  listDataGateways,
   GATEWAY_DOWN_RU,
-  GRAPHQL_ENDPOINTS,
+  listGraphqlEndpoints,
   GatewayUnavailableError,
   fetchTxJson,
   graphqlQuery,
@@ -13,11 +13,14 @@ function assert(cond: unknown, msg: string): asserts cond {
   if (!cond) throw new Error(msg);
 }
 
-assert(GRAPHQL_ENDPOINTS.length >= 3, "graphql fallbacks");
-assert(GRAPHQL_ENDPOINTS[0].includes("arweave.net"), "primary graphql");
-assert(GRAPHQL_ENDPOINTS.some((u) => u.includes("goldsky")), "goldsky graphql");
-assert(DATA_GATEWAYS.length >= 3, "data fallbacks");
-assert(ARWEAVE_HOSTS.includes("arweave.net") && ARWEAVE_HOSTS.includes("g8way.io"), "js client hosts");
+const graphql = listGraphqlEndpoints();
+const data = listDataGateways();
+const hosts = listArweaveHosts();
+assert(graphql.length >= 3, "graphql fallbacks");
+assert(graphql[0].includes("arweave.net"), "primary graphql");
+assert(graphql.some((u) => u.includes("goldsky")), "goldsky graphql");
+assert(data.length >= 3, "data fallbacks");
+assert(hosts.includes("arweave.net") && hosts.includes("g8way.io"), "js client hosts");
 
 const origFetch = globalThis.fetch;
 
@@ -80,6 +83,6 @@ try {
 globalThis.fetch = origFetch;
 
 console.log("gateways.selftest: OK", {
-  graphql: GRAPHQL_ENDPOINTS.length,
-  data: DATA_GATEWAYS.length,
+  graphql: graphql.length,
+  data: data.length,
 });

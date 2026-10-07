@@ -90,6 +90,8 @@ export function PublishSeedModal({
   const sponsorOn = isSponsorPublishEnabled();
   const demoOn = isDemoPublishEnabled();
   const treasuryOn = isTreasuryPublishEnabled();
+  /** Default product path: native Arweave TX from 12-word-derived wallet. */
+  const arweavePrimary = !demoOn && !sponsorOn;
   const session = getVaultSession();
   const knownMnemonic = knownMnemonicProp ?? getSessionMnemonic();
   const parentTxId = parentTxProp ?? session?.headTxId ?? null;
@@ -542,6 +544,7 @@ export function PublishSeedModal({
             </>
           )}
           {!demoOn && !sponsorOn && treasuryOn && t.publish.leadTreasury}
+          {arweavePrimary && !treasuryOn && t.publish.leadArweave}
         </p>
 
         {mode === "new-version" && (
@@ -577,13 +580,13 @@ export function PublishSeedModal({
                   {primarySaveLabel}
                 </button>
               )}
-              {!demoOn && (
+              {arweavePrimary && (
                 <button
-                  className="btn ghost"
+                  className={treasuryOn ? "btn ghost" : "btn"}
                   type="button"
                   onClick={() => void runSelfFundPublish(mnemonic)}
                 >
-                  {sponsorOn || treasuryOn ? t.publish.selfArNew : t.publish.networkNew}
+                  {treasuryOn ? t.publish.selfArNew : t.publish.sendToArweave}
                 </button>
               )}
               <button className="btn ghost" type="button" onClick={() => void runLocalExport(mnemonic)}>
@@ -704,13 +707,13 @@ export function PublishSeedModal({
                   {t.publish.treasurySave}
                 </button>
               )}
-              {!demoOn && (
+              {arweavePrimary && (
                 <button
-                  className="btn ghost"
+                  className={treasuryOn ? "btn ghost" : "btn"}
                   type="button"
                   onClick={() => void runSelfFundPublish(mnemonic)}
                 >
-                  {sponsorOn || treasuryOn ? t.publish.selfArFallback : t.publish.selfArMain}
+                  {treasuryOn ? t.publish.selfArFallback : t.publish.sendToArweave}
                 </button>
               )}
               <button className="btn ghost" type="button" onClick={() => void exportFileOnly()}>

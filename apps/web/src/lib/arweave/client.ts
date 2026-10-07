@@ -1,6 +1,8 @@
 import ArweaveImport from "arweave";
 import type Arweave from "arweave";
-import { ARWEAVE_HOSTS } from "./gateways";
+import { getArweaveEndpoint } from "./env";
+import { getArweaveHosts } from "./env";
+import { listArweaveHosts } from "./gateways";
 
 type ArweaveStatic = {
   init: (config: {
@@ -27,11 +29,13 @@ function resolveArweaveStatic(): ArweaveStatic {
 const ArweaveApi = resolveArweaveStatic();
 
 /** Shared gateway client for publish / address helpers. */
-export function createArweaveClient(host: string = ARWEAVE_HOSTS[0]): Arweave {
+export function createArweaveClient(host: string = getArweaveHosts()[0]): Arweave {
+  const ep = getArweaveEndpoint();
+  const isLocal = host === "127.0.0.1" || host === "localhost";
   return ArweaveApi.init({
     host,
-    port: 443,
-    protocol: "https",
+    port: isLocal ? ep.port : host === ep.host ? ep.port : 443,
+    protocol: isLocal ? "http" : host === ep.host ? ep.protocol : "https",
   });
 }
 
@@ -40,7 +44,7 @@ export async function withArweaveHost<T>(
   fn: (client: Arweave, host: string) => Promise<T>
 ): Promise<T> {
   let lastErr: unknown;
-  for (const host of ARWEAVE_HOSTS) {
+  for (const host of listArweaveHosts()) {
     try {
       return await fn(createArweaveClient(host), host);
     } catch (e) {

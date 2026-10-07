@@ -1,7 +1,8 @@
 import type { JWKInterface } from "arweave/web/lib/wallet";
 import type { EnvelopeV1 } from "../crypto/encrypt";
 import { createArweaveClient, withArweaveHost } from "./client";
-import { ARWEAVE_HOSTS } from "./gateways";
+import { getArweaveEndpoint } from "./env";
+import { listArweaveHosts } from "./gateways";
 
 const arweave = createArweaveClient();
 
@@ -24,7 +25,7 @@ async function winstonBalance(address: string): Promise<string> {
 
 async function postSignedTx(tx: SignedTx): Promise<{ status: number; statusText: string }> {
   let last = { status: 0, statusText: "no gateway" };
-  for (const host of ARWEAVE_HOSTS) {
+  for (const host of listArweaveHosts()) {
     try {
       const res = await createArweaveClient(host).transactions.post(tx);
       if (res.status === 200 || res.status === 208) return res;
@@ -49,7 +50,7 @@ export async function publishEnvelope(
   try {
     const data = JSON.stringify(envelope);
     let lastErr: unknown;
-    for (const host of ARWEAVE_HOSTS) {
+    for (const host of listArweaveHosts()) {
       try {
         const client = createArweaveClient(host);
         const tx = await client.createTransaction({ data }, jwk);
@@ -66,8 +67,17 @@ export async function publishEnvelope(
 
         await client.transactions.sign(tx, jwk);
         const address = await client.wallets.jwkToAddress(jwk);
-        const balance = await winstonBalance(address);
+        let balance = await winstonBalance(address);
         const price = tx.reward;
+        const ep = getArweaveEndpoint();
+        const isLocalDev =
+          ep.protocol === "http" &&
+          (ep.host === "127.0.0.1" || ep.host === "localhost");
+        if (isLocalDev && BigInt(balance) < BigInt(price)) {
+          // arlocal: /mint/:address/:winston (not mainnet — never runs when isLocalDev is false)
+          await client.api.get(`mint/${address}/999999999999`);
+          balance = await winstonBalance(address);
+        }
         if (BigInt(balance) < BigInt(price)) {
           return {
             ok: false,

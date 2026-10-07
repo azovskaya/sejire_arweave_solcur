@@ -3,20 +3,25 @@
  * host; restore/publish must walk the list instead of dying on arweave.net.
  */
 
-export const GRAPHQL_ENDPOINTS = [
-  "https://arweave.net/graphql",
-  "https://arweave-search.goldsky.com/graphql",
-  "https://ar-io.dev/graphql",
-] as const;
+import {
+  getArweaveHosts,
+  getDataGateways,
+  getGraphqlEndpoints,
+} from "./env";
 
-export const DATA_GATEWAYS = [
-  "https://arweave.net",
-  "https://ar-io.net",
-  "https://g8way.io",
-] as const;
+/** Resolved at call time so tests can set SEJIRE_ARWEAVE_* before publish. */
+export function listGraphqlEndpoints(): readonly string[] {
+  return getGraphqlEndpoints();
+}
+
+export function listDataGateways(): readonly string[] {
+  return getDataGateways();
+}
 
 /** Hosts for the official `arweave` JS client (create / sign / post / balance). */
-export const ARWEAVE_HOSTS = ["arweave.net", "ar-io.net", "g8way.io"] as const;
+export function listArweaveHosts(): readonly string[] {
+  return getArweaveHosts();
+}
 
 export const GATEWAY_TIMEOUT_MS = 12_000;
 
@@ -61,7 +66,7 @@ export async function graphqlQuery<T>(
   variables: Record<string, unknown>
 ): Promise<T> {
   let lastStatus: number | null = null;
-  for (const url of GRAPHQL_ENDPOINTS) {
+  for (const url of listGraphqlEndpoints()) {
     try {
       const res = await fetchWithTimeout(url, {
         method: "POST",
@@ -88,7 +93,7 @@ export async function graphqlQuery<T>(
 export async function fetchTxJson(txId: string): Promise<unknown | null> {
   const id = encodeURIComponent(txId);
   let sawHttp = false;
-  for (const base of DATA_GATEWAYS) {
+  for (const base of listDataGateways()) {
     try {
       const res = await fetchWithTimeout(`${base}/${id}`);
       sawHttp = true;
