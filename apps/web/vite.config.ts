@@ -24,12 +24,16 @@ export default defineConfig({
   plugins: [react(), spaFallback404()],
   resolve: {
     // Prefer browser build; node entry breaks Vite CJS default interop (.init).
-    alias: {
-      arweave: "arweave/web/index.js",
-    },
+    // Exact match only — a bare "arweave" alias rewrites arweave/web/* into a loop.
+    alias: [
+      {
+        find: /^arweave$/,
+        replacement: resolve(__dirname, "node_modules/arweave/web/index.js"),
+      },
+    ],
   },
   optimizeDeps: {
-    include: ["arweave/web/index.js", "node-forge", "@scure/bip39", "@noble/hashes"],
+    include: ["arweave", "node-forge", "@scure/bip39", "@noble/hashes"],
   },
   build: {
     commonjsOptions: {
