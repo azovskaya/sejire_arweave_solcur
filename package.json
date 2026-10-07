@@ -1,8 +1,8 @@
 {
-  "name": "sejire",
+  "name": "sejire-arweave-solcur",
   "private": true,
   "version": "0.3.0",
-  "description": "SEJIRE — versioned decentralized genealogy on Arweave + AO",
+  "description": "SEJIRE — versioned decentralized genealogy on Arweave L1 + AO (no Turbo middleman)",
   "scripts": {
     "present": "python3 -m http.server 4173 --directory .",
     "deck:pptx": "node presentation/build-pptx.mjs && node presentation/build-pptx-en.mjs",

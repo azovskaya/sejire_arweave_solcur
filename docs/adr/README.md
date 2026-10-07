@@ -7,4 +7,5 @@
 | [0003](./0003-two-tier-storage.md) | Graph in AO, media on Arweave | Accepted |
 | [0004](./0004-linear-history-v1.md) | Linear history only in v1 | Accepted |
 | [0005](./0005-public-read-v1.md) | Public read, owner write (v1) | Accepted |
-| [0006](./0006-sponsored-fiat-publish.md) | Fiat-sponsored publish + permaweb UI | Accepted |
+| [0006](./0006-sponsored-fiat-publish.md) | Fiat-sponsored publish + permaweb UI | Accepted (historical; superseded for solcur default by 0007) |
+| [0007](./0007-no-centralized-upload.md) | No Turbo / cashier on critical path | Accepted (sejire_arweave_solcur) |

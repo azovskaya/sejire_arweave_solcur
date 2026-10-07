@@ -1,46 +1,43 @@
-# SEJIRE
+# SEJIRE (sejire_arweave_solcur)
 
-**Создание неизменяемой ткани человеческой истории.**
+**Неизменяемая ткань человеческой истории — без централизованных посредников.**
 
-Протокол вечного версионного хранения родовых деревьев.  
+Протокол вечного версионного хранения родовых деревьев на **Arweave L1** и **AO**.  
 Сначала собираете древо (я → мама/папа → бабушки/дедушки).  
-**12 слов — только при отправке в Arweave.**
+**12 слов остаются на устройстве** и нужны только чтобы зашифровать сейф и подписать публикацию в сеть.
 
-## Продолжить разработку отсюда
+Форк от [sejire_arweave_solana](https://github.com/azovskaya/sejire_arweave_solana) / канона SEJIRE.  
+Протокол: `sejire/v0.3`.
 
-См. **[`docs/CHECKPOINT.ru.md`](./docs/CHECKPOINT.ru.md)** — что готово, решения, очередь задач.  
-Ветка: `cursor/ao-protocol-v03-82e4` · протокол: `sejire/v0.3`
+## Принципы этого репозитория
 
-## Открыть приложение
+| Делаем | Не делаем |
+|--------|-----------|
+| Публикация ciphertext напрямую в Arweave | Turbo, Irys и прочие upload/payment API на критическом пути |
+| Логика дерева в AO processes | Обязательный backend / кассир |
+| Восстановление только по 12 словам | Seed или plaintext у третьих сторон |
+| Публичные gateways с перебором | Привязка к одному коммерческому сервису |
 
-**https://azovskaya.github.io/Sejire_arweave/** — тестовое зеркало (Arweave пока не трогаем).
-
-Репозиторий: https://github.com/azovskaya/Sejire_arweave
+Решение: [`docs/adr/0007-no-centralized-upload.md`](./docs/adr/0007-no-centralized-upload.md).
 
 ## Локально
 
 ```bash
-git checkout cursor/ao-protocol-v03-82e4
-cd apps/web && npm install && npm test && npm run dev
+cd apps/web && npm install && npm test && npm run dev -- --host 127.0.0.1 --port 43123
 ```
 
-Обновить GitHub Pages из этого репо:
-
-```bash
-npm run deploy:pages
-```
+Режим публикации по умолчанию — **self**: адрес из 12 слов → нативный TX в Arweave.  
+Демо-режим браузера (`VITE_PUBLISH_MODE=demo`) — только для QA без сети.
 
 ## Структура
 
 | Путь | Содержание |
 |------|------------|
-| `apps/web` | Клиент (сбор древа + PDF + JSON + публикация) |
-| `apps/sponsor` | Кассир: mock + Kaspi Merchant API v2 + Turbo treasury |
-| `docs/` | Протокол, чекпоинт, locked decisions, rollout |
+| `apps/web` | Клиент: редактор, PDF/JSON, шифр, публикация в Arweave |
 | `ao/processes` | Lua Tree / Factory (`sejire/v0.3`) |
 | `packages/schema` | JSON Schema |
-| `presentation/` | Investor deck + PDF |
-| ветка `gh-pages` | Собранный сайт для Pages |
+| `docs/` | Протокол, ADR, чекпоинт |
+| `apps/sponsor` | Опциональный эксперимент (Kaspi); **не** часть дефолтного пути |
+| `presentation/` | Investor deck |
 
-Подробнее: [`docs/LIVE.md`](./docs/LIVE.md) · [`docs/README.md`](./docs/README.md) · [`docs/LOCKED_DECISIONS.ru.md`](./docs/LOCKED_DECISIONS.ru.md)
-
+Чекпоинт: [`docs/CHECKPOINT.ru.md`](./docs/CHECKPOINT.ru.md) · протокол: [`docs/PROTOCOL.md`](./docs/PROTOCOL.md)

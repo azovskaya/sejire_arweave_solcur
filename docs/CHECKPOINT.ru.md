@@ -1,10 +1,11 @@
 # SEJIRE — чекпоинт продолжения работы
 
 > **С этого места продолжать доработку.**  
-> Дата: **2026-08-20**  
-> Ветка: `cursor/ao-protocol-v03-82e4`  
+> Дата: **2026-10-07** (форк `sejire_arweave_solcur`)  
+> Ветка: `main`  
 > Протокол: **`sejire/v0.3`**  
-> Предыдущий продукт-чекпоинт: v0.4 (`sejire-v0.4-checkpoint`, permaweb upload)
+> База: импорт из `azovskaya/sejire_arweave_solana`  
+> **Инвариант форка:** критический путь без Turbo / кассира — см. [ADR-0007](./adr/0007-no-centralized-upload.md).
 
 Старые решения владельца не переспрашивать: [`LOCKED_DECISIONS.ru.md`](./LOCKED_DECISIONS.ru.md).  
 План Arweave/Kaspi: [`PERMAWEB_ROLLOUT.ru.md`](./PERMAWEB_ROLLOUT.ru.md).  
@@ -65,13 +66,14 @@
 
 ## 4. Что делать дальше
 
-1. **Сейчас:** тестировать и править на GitHub Pages. **Не выкладывать ArNS**, пока зеркало не ок.
-2. **Пак на Arweave:** когда зеркало ок — GitHub Actions → workflow «Upload SEJIRE SPA to Arweave» → confirm `pack-ready` (secret `PERMAWEB_JWK`) **или** локально `npm run deploy:permaweb` с `wallet.json`. Затем Phantom → Target ID. Ключ в чат не слать.
+1. **Сейчас:** доводить клиент и нативную публикацию в Arweave L1 (self-fund из 12 слов). Без Turbo.
+2. **Надёжность:** статусы TX (pending / confirmed), ретраи gateway, честный UX про AR и подтверждение.
 3. **aos:** Factory + Tree process IDs — отдельно, не блокер сейфа.
-4. **Kaspi live:** протокол в коде готов. Включить — ИП/ТОО + `KASPI_MERCHANT_TOKEN` + KV + `PAYMENT_PROVIDER=kaspi` + `TURBO_JWK`.
-5. Позже: медиа Turbo, GEDCOM, UI родства из AO.
+4. **Solana (опционально, позже):** только user-signed receipt/указатель на Arweave tx — не proxy-upload и не кредитный баланс у вендора.
+5. Позже: медиа через тот же L1-путь или peer-совместимый bundler *только* как опция пользователя; GEDCOM; UI родства из AO.
 
-**Не начинать** с переписывания редактора на Lua.
+**Не начинать** с переписывания редактора на Lua.  
+**Не возвращать** Turbo / обязательный Kaspi-кассир в дефолтный продукт.
 
 ---
 
