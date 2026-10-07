@@ -1,55 +1,31 @@
-# ProofPilot readiness review — SEJIRE
+# ProofPilot readiness — SEJIRE (alignment status)
 
-Дата инспекции: **2026-10-07**  
-Скилл: `proofpilot-readiness-review` (установлен в agent skills из https://github.com/Marakaya/proofpilot)  
-Режим: **coach** · контекст: **general** · Colosseum: **не подключён** (limited/offline)  
-Рубрика: `mvp_readiness` (ProofPilot rubrics v0.3.0)  
-Quality run: self-review → `needs_review` (independent reviewer недоступен в этой сессии)
+Скилл: [Marakaya/proofpilot](https://github.com/Marakaya/proofpilot) → `proofpilot-readiness-review`  
+Рубрика: `mvp_readiness` · обновление выравнивания: **2026-10-07**
 
-Публичное демо на момент проверки: https://harmonic-loop-9dn82uw.shipstatic.com
+## Что сделано по замечаниям ревью
 
-## Вердикт
+| Замечание | Статус |
+|-----------|--------|
+| Конфликт Turbo (HACKATHON) vs ADR-0007 | **Закрыто** — `docs/HACKATHON_2026.md` переписан под L1 |
+| Нет measurement / stop-go | **Закрыто** — `docs/MVP_MEASUREMENT.ru.md` |
+| Нет proof-лога | **Шаблон** — `docs/LIVE_PROOF.md` (строка после первого mainnet TX) |
+| Хост не GitHub | **В работе** — деплой только Pages; нужен push в GitHub |
+| Нет Solana для Solana-track | **Сознательный pause** — честный Arweave-only MVP |
+| Нет funded mainnet TX | **Открыто** — нужен AR у основателя |
 
-| Цель | Решение | Почему |
-|------|---------|--------|
-| Thin MVP «шифр → Arweave L1» | **revise** (почти готов, добить proof) | Код/тесты/UI есть; нет зафиксированного funded mainnet TX |
-| Подача на Solana-track хакатон | **pause** | Нет Solana в коде; eligibility/материалы неизвестны; HACKATHON_2026 vs ADR-0007 |
-| Пользовательский тест семей | **proceed** (после funded publish) | Нужны 12 слов + AR + сценарий restore на втором устройстве |
+## Текущий вердикт (после выравнивания)
 
-## Оценки `mvp_readiness` (0–4)
+| Цель | Решение |
+|------|---------|
+| Thin MVP Arweave L1 | **proceed** по коду/докам; settlement proof — после первой TX в `LIVE_PROOF.md` |
+| Apply / Solana hackathon pitch | **pause** пока нет Solana-receipt или смены трека |
+| User test | **proceed** после Pages URL + одной live TX |
 
-| Измерение | Балл | Комментарий |
-|-----------|-----:|-------------|
-| outcome_clarity | 3 | Технический outcome ясен; рыночный — гипотеза |
-| scope_discipline | 4 | Тонкий путь; Turbo/кассир вне критического пути (ADR-0007) |
-| delivery_feasibility | 3 | Сборка и тесты ок; AR funding / git write — риски |
-| measurement | 1 | Нет порогов успеха/стопа по adoption |
-| demo_readiness | 3 | Публичный SPA; e2e mainnet не зафиксирован |
+Ожидаемый публичный URL после GitHub deploy:  
+`https://azovskaya.github.io/sejire_arweave_solcur/`
 
-**Взвешенный балл: 2.95 / 4** · покрытие рубрики: 100% измерений · результат **provisional** для market claims.
+## Ограничения сессии агента
 
-## Блокеры
-
-1. Нет inspected funded mainnet vault TX  
-2. Не проверена eligibility / материалы Colosseum  
-3. Конфликт документов: Turbo в HACKATHON_2026 vs ADR-0007  
-
-## Быстрые победы
-
-1. Опубликовать одно синтетическое древо на mainnet → сохранить TX id → restore во втором браузере  
-2. Синхронизировать pitch/hackathon docs с L1-путём  
-3. Закрепить стабильный хост (claim shipstatic / Pages)  
-4. 3–5 интервью семей с заранее заданным stop/go  
-
-## Установка скилла (для агента)
-
-```bash
-git clone https://github.com/Marakaya/proofpilot.git
-cd proofpilot && npm install
-node scripts/cli.js install --target agents \
-  --dir /home/ubuntu/.cursor/skills-cursor/proofpilot \
-  --profiles --core-only
-```
-
-Профили: `proofpilot`, `proofpilot-readiness-review`, `proofpilot-mvp-planner`, и др.  
-Полный support bundle (36 skills + Colosseum) — без `--core-only` и с `setup.js --connect-colosseum` по запросу пользователя.
+- Colosseum Copilot не подключён (core-only ProofPilot).  
+- Без `gh auth` агент не может создать GitHub repo / включить Pages — требуется действие владельца.

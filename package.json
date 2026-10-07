@@ -14,11 +14,10 @@
     "test": "npm test --prefix apps/web && npm test --prefix apps/sponsor",
     "treasury:init": "node apps/sponsor/scripts/init-treasury.mjs",
     "deploy:pages": "bash scripts/deploy-pages.sh",
-    "deploy:permaweb": "bash scripts/deploy-permaweb.sh",
+    "deploy:permaweb": "echo 'Deprecated for this fork: UI is GitHub Pages only (ADR-0007). Vaults publish from the browser to Arweave L1.' && exit 1",
     "web:build:arns": "VITE_PUBLISH_MODE=self npm run build --prefix apps/web"
   },
   "devDependencies": {
-    "permaweb-deploy": "^5.0.0",
     "pptxgenjs": "^4.0.1"
   }
 }

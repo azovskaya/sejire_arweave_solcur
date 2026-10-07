@@ -1,4 +1,8 @@
-# Sponsor edge (Cloudflare Worker) — SEJIRE cashier
+# Sponsor edge (LEGACY) — not the default product path
+
+> **sejire_arweave_solcur:** vault publish is **Arweave L1** from the browser.  
+> This Cloudflare Worker + Kaspi + Turbo path is **legacy / research only** (ADR-0006 historical).  
+> Do not deploy it for the MVP. UI hosting is **GitHub Pages** only.
 
 Thin **payment verify → Turbo upload** for sealed vault envelopes.
 Never handles BIP-39 / plaintext trees.

@@ -1,8 +1,7 @@
-name: Deploy SEJIRE to gh-pages
+name: Deploy SEJIRE to GitHub Pages
 
-# Publishes apps/web build to the gh-pages branch of THIS repository.
-# GitHub Pages serves: https://azovskaya.github.io/Sejire_arweave/
-# Does not upload to Arweave.
+# UI hosting: GitHub Pages only (no ShipStatic / Netlify / other CDNs).
+# Vault data still publishes to Arweave L1 from the browser (not this workflow).
 
 on:
   push:
@@ -10,12 +9,15 @@ on:
     paths:
       - "apps/web/**"
       - "presentation/**"
+      - "index.html"
       - ".github/workflows/pages.yml"
       - "scripts/deploy-pages.sh"
   workflow_dispatch:
 
 permissions:
   contents: write
+  pages: write
+  id-token: write
 
 concurrency:
   group: gh-pages-deploy
@@ -37,24 +39,17 @@ jobs:
         working-directory: apps/web
         env:
           VITE_PUBLISH_MODE: self
-          VITE_QA_TOOLS: "1"
+          VITE_QA_TOOLS: "0"
         run: |
           npm ci
           npm run build
-      - name: Keep presentation from previous gh-pages
+      - name: Stage site
         run: |
-          mkdir -p apps/web/dist/presentation apps/web/dist/qa-13gen
-          git fetch origin gh-pages || true
-          git archive origin/gh-pages presentation 2>/dev/null | tar -x -C apps/web/dist || true
-          git archive origin/gh-pages qa-13gen 2>/dev/null | tar -x -C apps/web/dist || true
+          mkdir -p apps/web/dist/presentation
           if [ -d presentation ]; then cp -a presentation/. apps/web/dist/presentation/; fi
-          if [ -d artifacts/qa-13gen ]; then
-            mkdir -p apps/web/dist/qa-13gen
-            cp -a artifacts/qa-13gen/. apps/web/dist/qa-13gen/
-            rm -rf apps/web/dist/qa-13gen/live-arns 2>/dev/null || true
-          fi
+          if [ -f index.html ]; then cp -f index.html apps/web/dist/repo-index.html; fi
           touch apps/web/dist/.nojekyll
-      - name: Publish to gh-pages branch
+      - name: Publish to gh-pages
         uses: peaceiris/actions-gh-pages@v4
         with:
           github_token: ${{ secrets.GITHUB_TOKEN }}

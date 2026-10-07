@@ -66,14 +66,15 @@
 
 ## 4. Что делать дальше
 
-1. **Сейчас:** доводить клиент и нативную публикацию в Arweave L1 (self-fund из 12 слов). Без Turbo.
-2. **Надёжность:** статусы TX (pending / confirmed), ретраи gateway, честный UX про AR и подтверждение.
-3. **aos:** Factory + Tree process IDs — отдельно, не блокер сейфа.
-4. **Solana (опционально, позже):** только user-signed receipt/указатель на Arweave tx — не proxy-upload и не кредитный баланс у вендора.
-5. Позже: медиа через тот же L1-путь или peer-совместимый bundler *только* как опция пользователя; GEDCOM; UI родства из AO.
+1. **GitHub Pages:** репозиторий `azovskaya/sejire_arweave_solcur`, branch `gh-pages`, публичный URL.
+2. **Live proof:** одна mainnet TX + restore → `docs/LIVE_PROOF.md`.
+3. **Measurement:** сессии по `docs/MVP_MEASUREMENT.ru.md`.
+4. **aos:** Factory + Tree process IDs — не блокер сейфа.
+5. Solana только как optional receipt — не upload proxy.
 
 **Не начинать** с переписывания редактора на Lua.  
-**Не возвращать** Turbo / обязательный Kaspi-кассир в дефолтный продукт.
+**Не** хостить UI вне GitHub Pages.  
+**Не возвращать** Turbo / обязательный Kaspi-кассир.
 
 ---
 

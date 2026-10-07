@@ -24,3 +24,9 @@ SEJIRE’s goal is a decentralized, durable fabric of family history. Critical p
 - Bundled “instant” UX is sacrificed for verifiability and independence.
 - Gateways are interchangeable; failure is retried across the public set already in `gateways.ts`.
 - ADR-0006 (fiat + Turbo treasury) is **superseded for this fork’s default product path**; keep docs for historical Kaspi experiments only.
+
+## UI hosting (2026-10-07 addendum)
+
+- The **web app** is deployed only via **GitHub Pages** (`gh-pages` branch / Actions in this repository).
+- Do not use ShipStatic, Netlify Drop, Surge, or similar anonymous CDNs as the product host.
+- GitHub Pages hosts static UI only; it is not the vault store and must not receive seeds.
